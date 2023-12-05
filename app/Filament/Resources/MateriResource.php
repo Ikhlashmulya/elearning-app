@@ -2,35 +2,40 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
-use App\Models\User;
+use App\Filament\Resources\MateriResource\Pages;
+use App\Filament\Resources\MateriResource\RelationManagers;
+use App\Models\Materi;
+use Faker\Provider\ar_EG\Text;
 use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class UserResource extends Resource
+class MateriResource extends Resource
 {
-    protected static ?string $model = User::class;
+    protected static ?string $model = Materi::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $label = "Materi";
+
+    protected static ?string $navigationLabel = 'Materi';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('name'),
-                TextInput::make('email'),
-                TextInput::make('password')->password()->hiddenOn('edit'),
-                Toggle::make('is_active')->label('active')
+                Select::make('mata_kuliah_id')->relationship('mataKuliah', 'nama'),
+                TextInput::make('judul')->required(),
+                TextInput::make('description'),
+                FileUpload::make('file')->preserveFilenames()->directory('files')->previewable()
             ]);
     }
 
@@ -38,9 +43,8 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->searchable(),
-                TextColumn::make('email')->searchable(),
-                IconColumn::make('is_active')->label('active')
+                TextColumn::make('judul'),
+                TextColumn::make('mataKuliah.nama')
             ])
             ->filters([
                 //
@@ -65,9 +69,9 @@ class UserResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            'index' => Pages\ListMateris::route('/'),
+            'create' => Pages\CreateMateri::route('/create'),
+            'edit' => Pages\EditMateri::route('/{record}/edit'),
         ];
     }
 }
