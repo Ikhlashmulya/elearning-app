@@ -16,6 +16,20 @@
                     <a class="nav-link {{ request()->is('courses') ? 'active' : '' }}"
                         href="{{ route('courses') }}">Courses</a>
                 </li>
+                @if (!Auth::check())
+                    <li class="nav-item">
+                        <a href="{{ route('login') }}" class="nav-link {{ request()->is('login') ? 'active' : '' }}">
+                            Login
+                        </a>
+                    </li>
+                @else
+                    <li class="nav-item">
+                        <form action="/logout" method="POST">
+                            @csrf
+                            <button type="submit" class="nav-link">Logout</button>
+                        </form>
+                    </li>
+                @endif
             </ul>
         </div>
     </div>

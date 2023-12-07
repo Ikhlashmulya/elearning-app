@@ -23,6 +23,6 @@ class card extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.card');
+        return view('components.course-card');
     }
 }

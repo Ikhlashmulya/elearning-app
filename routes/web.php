@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,10 +18,16 @@ use App\Http\Controllers\HomeController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::prefix('courses')->group(function() {
+Route::middleware('auth')->prefix('courses')->group(function () {
     Route::get('', [CoursesController::class, 'index'])->name('courses');
+    Route::get('/{id}', [CoursesController::class, 'detail']);
+    Route::get('/{courseId}/content/{contentId}', [CoursesController::class, 'content']);
 });
 
-Route::get('/login', function () {
-    return view('user.login');
+Route::controller(UserController::class)->group(function () {
+    Route::get('/login', 'login')->name('login');
+    Route::post('/login', 'doLogin');
+    Route::post('/logout', 'doLogout');
+    Route::get('/register', 'register')->name('register');
+    Route::post('/register', 'doRegister');
 });

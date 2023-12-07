@@ -10,8 +10,8 @@ class HomeController extends Controller
 {
     public function index(Request $request): Response
     {
-        $data = MataKuliah::all()->take(2);
+        $data = MataKuliah::all()->take(6);
 
-        return response()->view('home', compact('data'));
+        return response()->view('home.index', compact('data'));
     }
 }

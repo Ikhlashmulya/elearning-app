@@ -11,8 +11,9 @@
     <div class="container mt-5">
         <div class="row">
             @foreach ($data as $d)
-                <x-card id="{{ $d->id }}" title="{{ $d->nama }}" />
+                <x-course-card id="{{ $d->id }}" title="{{ $d->nama }}" />
             @endforeach
         </div>
+        {{ $data->links() }}
     </div>
 </x-layout>
