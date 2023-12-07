@@ -3,10 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\MateriResource\Pages;
-use App\Filament\Resources\MateriResource\RelationManagers;
 use App\Models\Materi;
-use Faker\Provider\ar_EG\Text;
-use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -15,8 +12,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class MateriResource extends Resource
 {
@@ -35,7 +30,7 @@ class MateriResource extends Resource
                 Select::make('mata_kuliah_id')->relationship('mataKuliah', 'nama'),
                 TextInput::make('judul')->required(),
                 TextInput::make('description'),
-                FileUpload::make('file')->preserveFilenames()->directory('files')->previewable()
+                FileUpload::make('file')->preserveFilenames()->directory('files')->acceptedFileTypes(['application/pdf'])
             ]);
     }
 

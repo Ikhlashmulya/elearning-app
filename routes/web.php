@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CoursesController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +16,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::middleware('auth')->prefix('courses')->group(function () {
+    Route::get('', [CoursesController::class, 'index'])->name('courses');
+    Route::get('/{id}', [CoursesController::class, 'detail']);
+    Route::get('/{courseId}/content/{contentId}', [CoursesController::class, 'content']);
+});
+
+Route::controller(UserController::class)->group(function () {
+    Route::get('/login', 'login')->name('login');
+    Route::post('/login', 'doLogin');
+    Route::post('/logout', 'doLogout');
+    Route::get('/register', 'register')->name('register');
+    Route::post('/register', 'doRegister');
 });
